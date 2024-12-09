@@ -1,0 +1,111 @@
+<% layout('layouts/boilerplate.ejs') %>
+    <div class="row justify-content-center">
+        <h1 class="text-center mb-4">Add a New Parking Space</h1>
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <div class="card p-4 shadow-lg" style="border-radius: 15px;">
+                <form action="/parkings" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label" for="title">Title</label>
+                        <input class="form-control" type="text" id="title" name="parking[title]"
+                            placeholder="Enter a title for the parking space" required style="border-radius: 8px;">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="location">Location</label>
+                        <input class="form-control" type="text" id="location" name="parking[location]"
+                            placeholder="Enter the location of the parking space" required style="border-radius: 8px;">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="description">Description</label>
+                        <textarea class="form-control" id="description" name="parking[description]" rows="3"
+                            placeholder="Describe the parking space in detail" required
+                            style="border-radius: 8px;"></textarea>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="price">Parking Price</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price"
+                                name="parking[price]" required style="border-radius: 8px;">
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="image">Upload Images</label>
+                        <input type="file" class="form-control" id="image" name="image" multiple
+                            style="border-radius: 8px;">
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-success w-100" style="border-radius: 8px;">Add Parking Space</button>
+                    </div>
+                </form>
+                <div class="text-center">
+                    <a href="/parkings" class="text-decoration-none text-muted">View All Parking Spaces</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        h1 {
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        .card {
+            background: #ffffff;
+            border: none;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .form-control {
+            border: 1px solid #ced4da;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #28a745;
+            box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+        }
+
+        .input-group-text {
+            background-color: #e9ecef;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .text-muted {
+            font-size: 0.9rem;
+        }
+
+        .text-decoration-none {
+            color: #007bff;
+        }
+
+        .text-decoration-none:hover {
+            color: #0056b3;
+        }
+    </style>

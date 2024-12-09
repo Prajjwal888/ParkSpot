@@ -1,0 +1,176 @@
+<% layout('layouts/boilerplate.ejs') %>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+    <h1>All Parking Spaces</h1>
+
+    <!-- Map Container -->
+    <div id="map-container">
+        <div id="map"></div>
+    </div>
+
+    <div class="mb-3">
+        <a class="btn btn-success" href="parkings/new">Add Parking</a>
+    </div>
+
+    <!-- Parking List -->
+    <% for (let parking of parkings) { %>
+        <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <% if (parking.images && parking.images.length> 0 && parking.images[0].url) { %>
+                        <img class="img-fluid" alt="Parking Image" src="<%= parking.images[0].url %>">
+                        <% } else { %>
+                            <img class="img-fluid" alt="No Image Available" src="/path/to/placeholder-image.jpg">
+                            <% } %>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= parking.title %>
+                        </h5>
+                        <p class="card-text">
+                            <%= parking.location %>
+                        </p>
+                        <p class="card-text"><small class="text-muted">
+                                <%= parking.description %>
+                            </small></p>
+                        <a class="btn btn-primary" href="/parkings/<%= parking._id %>">View <%= parking.title %></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+
+            <style>
+                #map-container {
+                    width: 100%;
+                    height: 400px;
+                    margin-bottom: 20px;
+                }
+
+                #map {
+                    height: 100%;
+                    width: 100%;
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                }
+
+                .card img {
+                    width: 100%;
+                    height: 200px;
+                    object-fit: cover;
+                    border-radius: 8px;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                }
+
+                .card {
+                    border: 1px solid #ddd;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                }
+
+                .card .card-body {
+                    padding: 15px;
+                }
+
+                .card-title {
+                    font-size: 1.25rem;
+                    margin-bottom: 10px;
+                }
+
+                .card-text {
+                    margin-bottom: 10px;
+                    font-size: 0.9rem;
+                    color: #555;
+                }
+
+                .btn-primary {
+                    background-color: #007bff;
+                    border: none;
+                    transition: background-color 0.3s ease;
+                }
+
+                .btn-primary:hover {
+                    background-color: #0056b3;
+                }
+            </style>
+
+            <script>
+                // Initialize the map
+                var map = L.map('map').setView([20.5937, 78.9629], 5);
+                L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+
+                // Add markers for each parking location
+                const parkingData = JSON.parse('<%- JSON.stringify(parkings) %>');
+
+                async function getCoordinates(address) {
+                    const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(address)}`;
+                    try {
+                        const response = await fetch(url);
+                        const data = await response.json();
+                        if (data.length > 0) {
+                            return { latitude: parseFloat(data[0].lat), longitude: parseFloat(data[0].lon) };
+                        } else {
+                            console.error(`No coordinates found for address: ${address}`);
+                            return null;
+                        }
+                    } catch (error) {
+                        console.error("Error fetching coordinates:", error);
+                        return null;
+                    }
+                }
+
+                (async function addMarkers() {
+                    for (let [index, parking] of parkingData.entries()) {
+                        const coordinates = await getCoordinates(parking.location);
+
+                        if (coordinates) {
+                            L.marker([coordinates.latitude, coordinates.longitude])
+                                .addTo(map)
+                                .bindPopup(`<strong>${parking.title}</strong><br>${parking.location}`);
+                            navigator.geolocation.watchPosition(
+                                (pos) => {
+                                    const lat1 = coordinates.latitude;
+                                    const lon1 = coordinates.longitude;
+                                    const lat2 = pos.coords.latitude;
+                                    const lon2 = pos.coords.longitude;
+
+                                    const dist = Math.acos(
+                                        Math.sin(lat1 * Math.PI / 180) * Math.sin(lat2 * Math.PI / 180) +
+                                        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                                        Math.cos((lon2 - lon1) * Math.PI / 180)
+                                    ) * 6371;
+                                    const cardBodies = document.querySelectorAll('.card-body');
+                                    if (cardBodies[index]) {
+                                        const existingDistanceElement = cardBodies[index].querySelector('.distance');
+                                        const distanceText = `<strong>Distance:</strong> ${dist.toFixed(2)} km`;
+
+                                        if (!existingDistanceElement) {
+                                            const distanceElement = document.createElement('p');
+                                            distanceElement.className = 'distance';
+                                            distanceElement.innerHTML = distanceText;
+                                            cardBodies[index].appendChild(distanceElement);
+                                        } else {
+                                            existingDistanceElement.innerHTML = distanceText;
+                                        }
+                                    }
+                                },
+                                (err) => {
+                                    if (err.code === 1) {
+                                        alert("Please allow geolocation access.");
+                                    } else {
+                                        // alert("Cannot get current location.");
+                                    }
+                                }
+                            );
+                        }
+                    }
+                })();
+
+            </script>

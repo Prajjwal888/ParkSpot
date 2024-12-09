@@ -1,0 +1,137 @@
+<% layout('layouts/boilerplate.ejs') %>
+    <div class="row justify-content-center">
+        <h1 class="text-center mb-4">Edit Parking Space</h1>
+        <div class="col-lg-6 col-md-8 col-sm-12">
+            <div class="card p-4 shadow-lg" style="border-radius: 15px;">
+                <form action="/parkings/<%=parking._id%>?_method=PUT" method="POST" novalidate class="validated-form"
+                    enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label class="form-label" for="title">Title</label>
+                        <input class="form-control" type="text" id="title" name="parking[title]"
+                            value="<%=parking.title%>" placeholder="Enter a title for the parking space" required
+                            style="border-radius: 8px;">
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="location">Location</label>
+                        <input class="form-control" type="text" id="location" name="parking[location]"
+                            value="<%=parking.location%>" placeholder="Enter the location of the parking space" required
+                            style="border-radius: 8px;">
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="price">Parking Price</label>
+                        <div class="input-group">
+                            <span class="input-group-text">$</span>
+                            <input type="text" class="form-control" id="price" placeholder="0.00" aria-label="price"
+                                name="parking[price]" value="<%=parking.price%>" required style="border-radius: 8px;">
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="description">Description</label>
+                        <textarea class="form-control" id="description" name="parking[description]" rows="3"
+                            placeholder="Describe the parking space in detail" required
+                            style="border-radius: 8px;"><%=parking.description%></textarea>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label" for="image">Upload Additional Images</label>
+                        <input type="file" class="form-control" id="image" name="image" multiple
+                            style="border-radius: 8px;">
+                    </div>
+
+                    <% if (parking.images.length> 0) { %>
+                        <div class="mb-3">
+                            <label class="form-label">Current Images</label>
+                            <div class="row">
+                                <% parking.images.forEach(function(img, i) { %>
+                                    <div class="col-4 text-center mb-3">
+                                        <img src="<%=img.url%>" class="img-thumbnail"
+                                            style="max-height: 150px; border-radius: 8px;">
+                                        <div class="form-check mt-2">
+                                            <input type="checkbox" id="image-<%=i%>" name="deleteImages[]"
+                                                value="<%=img.filename%>" class="form-check-input">
+                                            <label for="image-<%=i%>" class="form-check-label">Delete?</label>
+                                        </div>
+                                    </div>
+                                    <% }); %>
+                            </div>
+                        </div>
+                        <% } %>
+
+                            <div class="mb-3">
+                                <button class="btn btn-info w-100" style="border-radius: 8px;">Update Parking</button>
+                            </div>
+                </form>
+
+                <div class="text-center">
+                    <a href="/parkings/<%= parking._id %>" class="text-decoration-none text-muted">Back to Parking
+                        Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        h1 {
+            font-weight: bold;
+            color: #343a40;
+        }
+
+        .card {
+            background: #ffffff;
+            border: none;
+        }
+
+        .btn-info {
+            background-color: #17a2b8;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .btn-info:hover {
+            background-color: #138496;
+        }
+
+        .form-control {
+            border: 1px solid #ced4da;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: #17a2b8;
+            box-shadow: 0 0 5px rgba(23, 162, 184, 0.5);
+        }
+
+        .img-thumbnail {
+            max-width: 100%;
+            border: 2px solid #ddd;
+            transition: transform 0.3s ease;
+        }
+
+        .img-thumbnail:hover {
+            transform: scale(1.05);
+        }
+
+        .text-muted {
+            font-size: 0.9rem;
+        }
+
+        .text-decoration-none {
+            color: #007bff;
+        }
+
+        .text-decoration-none:hover {
+            color: #0056b3;
+        }
+    </style>
