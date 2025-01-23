@@ -1,0 +1,107 @@
+<% layout('layouts/boilerplate.ejs') %>
+<div class="row justify-content-center">
+    <h1 class="text-center mb-4">Book Parking Space</h1>
+    <div class="col-lg-6 col-md-8 col-sm-12">
+        <div class="card p-4 shadow-lg" style="border-radius: 15px;">
+            <form action="/parkings/<%= parking._id %>/user/<%=user._id%>/bookings" method="POST" novalidate class="validated-form">
+
+                <input type="hidden" name="booking[user]" value="<%= user._id %>">
+
+                <input type="hidden" name="booking[parking]" value="<%= parking._id %>">
+
+                <div class="mb-3">
+                    <label class="form-label" for="slotType">Slot Type</label>
+                    <select class="form-control" id="slotType" name="booking[slotType]" required style="border-radius: 8px;">
+                        <option value="" disabled selected>Select a slot type</option>
+                        <option value="twoWheeler">Two-Wheeler</option>
+                        <option value="fourWheeler">Four-Wheeler</option>
+                    </select>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+
+                <!-- <div class="mb-3">
+                    <label class="form-label" for="slotCount">Number of Slots</label>
+                    <input class="form-control" type="number" id="slotCount" name="booking[slotCount]" 
+                           placeholder="Enter the number of slots to book" required style="border-radius: 8px;" min="1">
+                    <div class="valid-feedback">Looks good!</div>
+                </div> -->
+
+                <div class="mb-3">
+                    <label class="form-label" for="startTime">Start Time</label>
+                    <input class="form-control" type="datetime-local" id="startTime" name="booking[startTime]" 
+                           required style="border-radius: 8px;">
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label" for="endTime">End Time</label>
+                    <input class="form-control" type="datetime-local" id="endTime" name="booking[endTime]" 
+                           required style="border-radius: 8px;">
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+
+                <div class="mb-3">
+                    <button class="btn btn-success w-100" style="border-radius: 8px;">Confirm Booking</button>
+                </div>
+            </form>
+
+            <div class="text-center">
+                <a href="/parkings/<%= parking._id %>" class="text-decoration-none text-muted">Back to Parking Details</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    h1 {
+        font-weight: bold;
+        color: #343a40;
+    }
+
+    .card {
+        background: #ffffff;
+        border: none;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+    .btn-success:hover {
+        background-color: #218838;
+    }
+
+    .form-control {
+        border: 1px solid #ced4da;
+        transition: border-color 0.3s ease;
+    }
+
+    .form-control:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 5px rgba(40, 167, 69, 0.5);
+    }
+
+    .input-group-text {
+        background-color: #e9ecef;
+        border-radius: 8px 0 0 8px;
+    }
+
+    .text-muted {
+        font-size: 0.9rem;
+    }
+
+    .text-decoration-none {
+        color: #007bff;
+    }
+
+    .text-decoration-none:hover {
+        color: #0056b3;
+    }
+</style>

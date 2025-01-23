@@ -12,6 +12,7 @@ const ParkingSchema = new Schema({
     price: Number,
     description: String,
     location: String,
+    phoneNumber:String,
     author: {
         type: Schema.Types.ObjectId,
         ref: 'User'
@@ -21,7 +22,11 @@ const ParkingSchema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'Review'
         }
-    ]
+    ],
+    slotsAvailable: {
+        twoWheeler: { type: Number, required: true, default: 0 },
+        fourWheeler: { type: Number, required: true, default: 0 },
+    }
 })
 ParkingSchema.post('findOneAndDelete', async function (parking) {
     if (parking) {

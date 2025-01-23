@@ -1,0 +1,101 @@
+<% layout('layouts/boilerplate.ejs') %>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css">
+<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+
+<h1>My Bookings</h1>
+
+<!-- Booking List -->
+<% if (bookings && bookings.length > 0) { %>
+    <% for (let booking of bookings) { %>
+        <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <% if (booking.parking.images && booking.parking.images.length > 0 && booking.parking.images[0].url) { %>
+                        <img class="img-fluid" alt="Parking Image" src="<%= booking.parking.images[0].url %>">
+                    <% } else { %>
+                        <img class="img-fluid" alt="No Image Available" src="/path/to/placeholder-image.jpg">
+                    <% } %>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= booking.parking.title %>
+                        </h5>
+                        <p class="card-text">
+                            Location: <%= booking.parking.location %>
+                        </p>
+                        <p class="card-text">
+                            Slot Type: <%= booking.slotType %>
+                        </p>
+                        <!-- <p class="card-text">
+                            Parking Space :<%= booking.parking.title %> -->
+                        </p>
+                        <p class="card-text">
+                            Start Time: <%= new Date(booking.startTime).toLocaleString() %>
+                        </p>
+                        <p class="card-text">
+                            End Time: <%= new Date(booking.endTime).toLocaleString() %>
+                        </p>
+                        <p class="card-text">
+                            Status: <%= booking.bookingStatus %>
+                        </p>
+                        <!-- <a class="btn btn-primary" href="/parkings/<%= booking.parking._id %>">View Parking Details</a> -->
+                        <% if (currentUser) { %>
+                            <div class="card-body">
+                                <!-- <a class="card-link btn btn-info" href="/bookings/<%=booking._id%>/edit">Edit</a> -->
+                                <form class="d-inline" action="/bookings/<%=booking._id%>?_method=DELETE" method="POST">
+                                    <button class="btn btn-danger">CANCEL</button>
+                                </form>
+                            </div>
+                            <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %>
+<% } else { %>
+    <p>No bookings found.</p>
+<% } %>
+
+<style>
+    .card img {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card .card-body {
+        padding: 15px;
+    }
+
+    .card-title {
+        font-size: 1.25rem;
+        margin-bottom: 10px;
+    }
+
+    .card-text {
+        margin-bottom: 10px;
+        font-size: 0.9rem;
+        color: #555;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        border: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+</style>

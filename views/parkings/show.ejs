@@ -40,11 +40,12 @@
                     <li class="list-group-item text-muted">
                         <%= parking.location %>
                     </li>
-                    <li class="list-group-item text-muted">Submitted By <%= parking.author.username %>
+                    <li class="list-group-item text-muted">Contact Us :<%= parking.phoneNumber %>
                     </li>
-                    <li class="list-group-item">$<%= parking.price %>/night</li>
+                    <li class="list-group-item">$<%= parking.price %>/day</li>
+                    <li class="list-group-item">Two Wheelers Space Available: <%= parking.slotsAvailable.twoWheeler%></li>
+                    <li class="list-group-item">Four Wheelers Space Available: <%= parking.slotsAvailable.fourWheeler%></li>
                 </ul>
-
                 <% if (currentUser && parking.author.equals(currentUser._id)) { %>
                     <div class="card-body">
                         <a class="card-link btn btn-info" href="/parkings/<%= parking._id %>/edit">Edit</a>
@@ -53,6 +54,12 @@
                         </form>
                     </div>
                     <% } %>
+
+                    <% if (currentUser) { %>
+                        <div class="card-body">
+                            <a class="card-link btn btn-info" href="/parkings/<%= parking._id %>/user/<%=currentUser._id%>/bookings/new">Book</a>
+                        </div>
+                        <% } %>
                         <div class="card-footer text-muted">2 days ago</div>
             </div>
         </div>

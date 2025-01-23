@@ -41,6 +41,31 @@
                         </div>
                     </div>
                     <div class="mb-3">
+                        <label class="form-label" for="phoneNumber">Contact Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text">91+</span>
+                            <input type="text" class="form-control" id="phoneNumber" placeholder="0.00" aria-label="phoneNumber"
+                                name="parking[phoneNumber]" required style="border-radius: 8px;">
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="twoWheeler">Slots for two wheelers</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="twoWheeler" placeholder="0.00" aria-label="twoWheeler"
+                                name="parking[slotsAvailable][twoWheeler]" required style="border-radius: 8px;">
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="fourWheeler">Slots for four wheelers</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="fourWheeler" placeholder="0.00" aria-label="fourWheeler"
+                                name="parking[slotsAvailable][fourWheeler]" required style="border-radius: 8px;">
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label" for="image">Upload Images</label>
                         <input type="file" class="form-control" id="image" name="image" multiple
                             style="border-radius: 8px;">
