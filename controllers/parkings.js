@@ -31,7 +31,7 @@ module.exports.showParking = async (req, res) => {
     .populate("author");
   if (!parking) {
     req.flash("error", "Cannot find that parking space");
-    res.redirect("/parkings");
+    return res.redirect("/parkings");
   }
   res.render("parkings/show", { parking });
 };
@@ -40,7 +40,7 @@ module.exports.editForm = async (req, res) => {
   const parking = await Parking.findById(id);
   if (!parking) {
     req.flash("error", "Cannot find that parking space");
-    res.redirect("/parkings");
+    return res.redirect("/parkings");
   }
   res.render("parkings/edit", { parking });
 };
