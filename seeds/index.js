@@ -4,7 +4,7 @@ const { names } = require("./seedHelpers");
 const Parking = require("../models/parking");
 const { imageUrls } = require("./photos");
 const User = require("../models/user");
-mongoose.connect("mongodb://localhost:27017/parking-space", {
+mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -20,13 +20,13 @@ const sample = (array) => array[Math.floor(Math.random() * array.length)];
 
 const seedDB = async () => {
   await Parking.deleteMany({});
-  await User.findByIdAndUpdate("677652e86240a497e2ba7532", { role: "admin" });
+  await User.findByIdAndUpdate("67928b5325d4cace3a1924fd", { role: "admin" });
   for (let i = 0; i < 10; i++) {
     const random20 = Math.floor(Math.random() * 20) + 1;
     const price = Math.floor(Math.random() * 20) + 10;
     const imageIndex = Math.floor(Math.random() * 5);
     const parking = new Parking({
-      author: "677652e86240a497e2ba7532",
+      author: "67928b5325d4cace3a1924fd",
       location: `${cities[random20].city}, ${cities[random20].state}`,
       title: `${sample(names)}`,
       images: [{ url: imageUrls[imageIndex] }],
