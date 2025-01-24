@@ -4,17 +4,10 @@ const { names } = require("./seedHelpers");
 const Parking = require("../models/parking");
 const { imageUrls } = require("./photos");
 const User = require("../models/user");
-mongoose.connect(process.env.MONGODB_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-const db = mongoose.connection;
-
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
-  console.log("Database connected");
-});
+async function connectDB(){
+await mongoose.connect(process.env.MONGODB_URL).then(()=>console.log("DB Connected"));
+}
+connectDB();
 
 const sample = (array) => array[Math.floor(Math.random() * array.length)];
 
