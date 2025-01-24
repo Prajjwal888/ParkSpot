@@ -18,18 +18,10 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/user");
 const ExpressError = require("./utils/ExpressError");
 
-mongoose.connect("mongodb://localhost:27017/parking-space", {
-  useNewUrlParser: true,
-  // useCreateIndex:true,
-  useUnifiedTopology: true,
-  // useFindAndModify:false
-});
-
-const db = mongoose.connection;
-db.on("error", console.error.bind(console, "connection error:"));
-db.once("open", () => {
-  console.log("Database Connected");
-});
+async function connectDB(){
+await mongoose.connect(process.env.MONGODB_URL).then(()=>console.log("DB Connected"));
+}
+connectDB();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
